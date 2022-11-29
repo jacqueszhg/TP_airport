@@ -1,4 +1,4 @@
-package pressure
+package main
 
 import (
 	mqttConfig "Airport/internal/pkg/mqtt"
