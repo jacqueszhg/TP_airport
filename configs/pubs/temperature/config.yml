@@ -1,4 +1,10 @@
-id: 123
-airport: 'NTE'
-frequency: '10000'
-QOSLevel: '1'
+MQTT:
+  protocol: 'tcp'
+  url: 'localhost'
+  port: '1883'
+
+sensor:
+  id: 123
+  airport: 'NTE'
+  frequency: '10000'
+  QOSLevel: '1'

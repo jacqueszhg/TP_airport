@@ -1,13 +1,27 @@
 package main
 
 import (
+	"Airport/internal/pkg/config"
 	mqttConfig "Airport/internal/pkg/mqtt"
-	"fmt"
 )
 
 func main() {
-	client := mqttConfig.Connect("tcp://localhost:1883", "aze")
-	token := client.Publish("aiport/capteur/vent", 2, true, "je suis le vent pfou !")
+
+	sensor := config.GetSensorConfig().Sensor
+	mqtt := config.GetSensorConfig().MQTT
+
+	urlBroker := mqtt.Protocol + "://" + mqtt.Url + ":" + mqtt.Port
+	msg := mqttConfig.MessageSensorPublisher{
+		sensor.Id,
+		"temperature",
+		sensor.AirportCode,
+		"heure",
+		12.1,
+	}
+
+	client := mqttConfig.Connect(urlBroker, sensor.Id) //TODO
+	token := client.Publish("aiport/capteur/temperature", 1, true, msg)
 	token.Wait()
-	fmt.Printf("ok")
+
+	//TODO finir le capteur température
 }
