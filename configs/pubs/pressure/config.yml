@@ -1,4 +1,4 @@
-MQTT:
+mqtt:
   protocol: 'tcp'
   url: 'localhost'
   port: '1883'
