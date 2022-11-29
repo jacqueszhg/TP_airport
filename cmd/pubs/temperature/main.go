@@ -1,4 +1,4 @@
-package temperature
+package main
 
 import (
 	mqttConfig "Airport/internal/pkg/mqtt"
