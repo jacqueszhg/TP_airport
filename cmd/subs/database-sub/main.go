@@ -1,4 +1,4 @@
-package database_sub
+package main
 
 import (
 	mqttConfig "Airport/internal/pkg/mqtt"
