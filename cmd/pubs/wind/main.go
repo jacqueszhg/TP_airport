@@ -1,4 +1,4 @@
-package wind
+package main
 
 func main() {
 
