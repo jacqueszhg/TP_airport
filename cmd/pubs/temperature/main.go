@@ -8,7 +8,6 @@ import (
 )
 
 func main() {
-
 	sensor := config.GetSensorConfig("").Sensor
 	mqtt := config.GetSensorConfig("").MQTT
 

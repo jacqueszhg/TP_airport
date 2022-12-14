@@ -10,7 +10,9 @@ cd "$WORKDIR"
 
 # Clean & Build
 go clean ./...
-rm -rd "$INSTALL_PATH"
+if [ -d "$INSTALL_PATH" ] ; then
+    rm -rd "$INSTALL_PATH"
+fi
 go install ./...
 
 # Making dir
@@ -26,3 +28,8 @@ mkdir "$INSTALL_PATH/$AIRPORT/pubs"
 mv "$GOPATH/bin/pressure" "$INSTALL_PATH/$AIRPORT/sensors/pressure/"
 mv "$GOPATH/bin/temperature" "$INSTALL_PATH/$AIRPORT/sensors/temperature/"
 mv "$GOPATH/bin/wind" "$INSTALL_PATH/$AIRPORT/sensors/wind/"
+
+# Move configs
+cp "$WORKDIR/configs/pubs/pressure/config.yml" "$INSTALL_PATH/$AIRPORT/sensors/pressure/"
+cp "$WORKDIR/configs/pubs/temperature/config.yml" "$INSTALL_PATH/$AIRPORT/sensors/temperature/"
+cp "$WORKDIR/configs/pubs/wind/config.yml" "$INSTALL_PATH/$AIRPORT/sensors/wind/"
