@@ -21,10 +21,10 @@ type SensorConfig struct {
 	}
 }
 
-func GetSensorConfig() SensorConfig {
+func GetSensorConfig(pathConfig string) SensorConfig {
 	var config SensorConfig
 
-	file, err := os.ReadFile("configs/config.yml")
+	file, err := os.ReadFile(pathConfig)
 	if err != nil {
 		log.Fatal(err)
 	}
