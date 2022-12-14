@@ -22,7 +22,6 @@ mkdir "$INSTALL_PATH/$AIRPORT/sensors"
 mkdir "$INSTALL_PATH/$AIRPORT/sensors/pressure"
 mkdir "$INSTALL_PATH/$AIRPORT/sensors/temperature"
 mkdir "$INSTALL_PATH/$AIRPORT/sensors/wind"
-mkdir "$INSTALL_PATH/$AIRPORT/pubs"
 
 # Move bins
 mv "$GOPATH/bin/pressure" "$INSTALL_PATH/$AIRPORT/sensors/pressure/"
