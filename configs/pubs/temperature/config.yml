@@ -1,4 +1,4 @@
-MQTT:
+mqtt:
   protocol: 'tcp'
   url: 'localhost'
   port: '1883'
@@ -6,5 +6,5 @@ MQTT:
 sensor:
   id: 2
   airport: 'NTE'
-  frequency: '10000'
-  QOSLevel: '1'
+  frequency: 10
+  QOSLevel: 1

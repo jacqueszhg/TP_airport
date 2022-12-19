@@ -14,10 +14,10 @@ type SensorConfig struct {
 	}
 
 	Sensor struct {
-		Id          string `yaml:"id"`
-		AirportCode string `yaml:"airportCode"`
-		Frequency   string `yaml:"frequency"`
-		QOSLevel    string `yaml:"QOSLevel"`
+		Id        string `yaml:"id"`
+		Airport   string `yaml:"airport"`
+		Frequency string `yaml:"frequency"`
+		QOSLevel  string `yaml:"QOSLevel"`
 	}
 }
 
@@ -34,6 +34,5 @@ func GetSensorConfig(pathConfig string) SensorConfig {
 	if err2 != nil {
 		log.Fatal(err2)
 	}
-
 	return config
 }

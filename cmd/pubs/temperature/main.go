@@ -3,34 +3,46 @@ package main
 import (
 	"Airport/internal/pkg/config"
 	mqttConfig "Airport/internal/pkg/mqtt"
+	"encoding/json"
+	"fmt"
 	"strconv"
 	"time"
 )
 
 func main() {
-	sensor := config.GetSensorConfig("").Sensor
-	mqtt := config.GetSensorConfig("").MQTT
+	configPub := config.GetSensorConfig("./config.yml")
+	sensor := configPub.Sensor
+	mqtt := configPub.MQTT
 
 	urlBroker := mqtt.Protocol + "://" + mqtt.Url + ":" + mqtt.Port
-	/*msg := mqttConfig.MessageSensorPublisher{
-		sensor.Id,
-		"temperature",
-		sensor.AirportCode,
-		"heure",
-		12.1,
-	}*/
 	sensorId, err := strconv.Atoi(sensor.Id)
 	QOSLevel, err := strconv.Atoi(sensor.QOSLevel)
-	if err != nil {
+	frequency, err := strconv.Atoi(sensor.Frequency)
+
+	if err == nil {
+		fmt.Println(urlBroker)
 		msg := mqttConfig.MessageSensorPublisher{
 			SensorId:    sensorId,
 			SensorType:  "temperature",
-			AirportCode: sensor.AirportCode,
-			Timestamp:   time.Now().Format("2017-09-07 17:06:06"),
+			AirportCode: sensor.Airport,
+			Timestamp:   time.Now().String(),
 			Value:       12.1,
 		}
+
+		bytesMsg, err := json.Marshal(msg)
+
+		if err != nil {
+			fmt.Println("Can't serislize", msg)
+		}
+
 		client := mqttConfig.Connect(urlBroker, sensor.Id) //TODO
-		client.Publish("aiport/capteur/temperature", byte(QOSLevel), true, msg)
+
+		// Infinit loop for publish each "frenquency" secondes
+		for {
+			token := client.Publish("airport/temperature", byte(QOSLevel), true, bytesMsg)
+			token.Wait()
+			time.Sleep(time.Duration(frequency) * time.Second)
+		}
 	}
 
 	//TODO finir le capteur température
