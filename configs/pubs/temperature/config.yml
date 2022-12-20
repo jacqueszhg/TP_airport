@@ -6,5 +6,5 @@ mqtt:
 sensor:
   id: 2
   airport: 'NTE'
-  frequency: 10
+  frequency: 3
   QOSLevel: 1
