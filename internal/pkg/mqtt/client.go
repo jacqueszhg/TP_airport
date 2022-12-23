@@ -37,6 +37,6 @@ type MessageSensorPublisher struct {
 	SensorId    int
 	SensorType  string
 	AirportCode string
-	Timestamp   string
+	Timestamp   time.Time
 	Value       float64
 }

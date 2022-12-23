@@ -20,11 +20,14 @@ func main() {
 }
 
 func myHandler(client mqtt.Client, message mqtt.Message) {
-	// TODO :Register sensors data in influxDB
+	// TODO : register in database
 	var r mqttConfig.MessageSensorPublisher
 	err := json.Unmarshal(message.Payload(), &r)
 	if err != nil {
 		fmt.Println("Can't deserislize", message.Payload())
 	}
+
 	fmt.Println(r)
+	fmt.Println("\n")
+
 }

@@ -57,7 +57,7 @@ func main() {
 				SensorId:    sensorId,
 				SensorType:  "temperature",
 				AirportCode: sensor.Airport,
-				Timestamp:   time.Now().String(),
+				Timestamp:   time.Now(),
 				Value:       currentTemp,
 			}
 
@@ -66,8 +66,10 @@ func main() {
 			if err != nil {
 				fmt.Println("Can't serislize", msg)
 			}
-			token := client.Publish("airport/temperature", byte(QOSLevel), true, bytesMsg)
-			token.Wait()
+			tokenDB := client.Publish("airport/temperature", byte(QOSLevel), true, bytesMsg)
+			tokenLog := client.Publish("airport/log", byte(QOSLevel), true, bytesMsg)
+			tokenDB.Wait()
+			tokenLog.Wait()
 			time.Sleep(time.Duration(frequency) * time.Second)
 			currentTime.Add(time.Duration(frequency) * (time.Second * 3600))
 		}
