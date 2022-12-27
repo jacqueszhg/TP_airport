@@ -16,13 +16,13 @@ func main() {
 	wg.Add(2)
 
 	client := mqttConfig.Connect("tcp://localhost:1883", "log")
-	client.Subscribe("airport/log", 1, myHandler)
+	client.Subscribe("airport/log", 1, handler)
 
-	fmt.Printf("finish")
 	wg.Wait()
 }
 
-func myHandler(client mqtt.Client, message mqtt.Message) {
+func handler(client mqtt.Client, message mqtt.Message) {
+	// Deserialize the object message
 	var res mqttConfig.MessageSensorPublisher
 	err := json.Unmarshal(message.Payload(), &res)
 	if err != nil {
@@ -30,82 +30,113 @@ func myHandler(client mqtt.Client, message mqtt.Message) {
 		fmt.Println(err)
 	}
 
-	pathFile := "log/%d.csv"
+	// Create the path for save the CSV
+	pathFile := "../log/%sensorType/%airport-%date-%sensorType.csv"
 	date := res.Timestamp.Format("2006-01-02")
-	pathFile = strings.ReplaceAll(pathFile, "%d", date)
+	pathFile = strings.ReplaceAll(pathFile, "%sensorType", res.SensorType)
+	pathFile = strings.ReplaceAll(pathFile, "%airport", res.AirportCode)
+	pathFile = strings.ReplaceAll(pathFile, "%date", date)
 
-	fmt.Println("\n")
+	// Check if the file exist
 	if !fileCSVExist(pathFile) {
-		createCSV(pathFile)
+		createCSV(pathFile, res.SensorType, res.UnitOfMeasure)
 	}
-	openCSVAndWriteNewData(pathFile, res)
+
+	// Save data
+	writeDataInCell(
+		res,
+		pathFile,
+	)
 }
 
 func fileCSVExist(filePath string) bool {
 	// Check if the file exists
 	if _, err := os.Stat(filePath); err != nil {
-		fmt.Println(err)
 		return false
 	} else {
 		return true
 	}
 }
 
-func createCSV(filepath string) {
+func createCSV(filepath string, sensorType string, UnitOfMeasure string) {
 	// Create a new CSV file
 	file, err := os.Create(filepath)
 	if err != nil {
-		// Handle error
 		fmt.Println(err)
 	}
 	defer file.Close()
 
-	// Change the permissions of the file "data.csv" to 644 (rw-r--r--)
-	err = os.Chmod(filepath, 0755)
-	if err != nil {
-		// Handle error
-		fmt.Print("permission : ")
-		fmt.Println(err)
-		return
-	}
-
 	// Create a new CSV writer
 	writer := csv.NewWriter(file)
-
-	// Write the header row
-	header := []string{"Time", "Temperature", "Pressure", "Wind"}
+	header := []string{
+		"Time",
+		sensorType + " (" + UnitOfMeasure + ")",
+	}
 	err = writer.Write(header)
 	if err != nil {
-		// Handle error
 		fmt.Println(err)
 	}
 	// Flush the writer to ensure all data is written to the file
 	writer.Flush()
+
+	// Check for any errors
+	err = writer.Error()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Print("New file log is created at : ")
+	fmt.Println(filepath)
 }
 
-func openCSVAndWriteNewData(filepath string, data mqttConfig.MessageSensorPublisher) {
+func writeDataInCell(data mqttConfig.MessageSensorPublisher, filepath string) {
+	// Open the file for reading
 	file, err := os.Open(filepath)
 	if err != nil {
-		if os.IsNotExist(err) {
-			fmt.Println("File does not exist")
-			fmt.Println(err)
+		// Handle error
+		fmt.Println(err)
+		return
+	}
+	defer file.Close()
 
-		} else {
-			// Handle other error
-			fmt.Println(err)
-		}
+	// Create a new CSV reader
+	reader := csv.NewReader(file)
+
+	// Read the file contents into a slice of slices of strings
+	records, err := reader.ReadAll()
+	if err != nil {
+		// Handle error
+		fmt.Println(err)
+		return
+	}
+
+	// Add new data in the array
+	newRecord := []string{
+		data.Timestamp.Format("15:04:05"),
+		fmt.Sprintf("%f", data.Value),
+	}
+	records = append(records, newRecord)
+
+	// Open the file for writing
+	file, err = os.Create(filepath)
+	if err != nil {
+		// Handle error
+		fmt.Println(err)
 		return
 	}
 	defer file.Close()
 
 	// Create a new CSV writer
-	// Create a new CSV reader
 	writer := csv.NewWriter(file)
 
-	newData := []string{
-		data.Timestamp.Format("15:04:05"), fmt.Sprintf("%f", data.Value),
+	// Write the modified data back to the file
+	for _, record := range records {
+		err = writer.Write(record)
+		if err != nil {
+			// Handle error
+			return
+		}
 	}
-	writer.Write(newData)
 
 	// Flush the writer to ensure all data is written to the file
 	writer.Flush()
@@ -113,10 +144,12 @@ func openCSVAndWriteNewData(filepath string, data mqttConfig.MessageSensorPublis
 	// Check for any errors
 	err = writer.Error()
 	if err != nil {
-		// Handle erro
-		fmt.Println(err)
+		// Handle error
 		return
 	}
 
-	fmt.Println("Data written successfully")
+	fmt.Print("Data written successfully for : ")
+	fmt.Print(data.SensorType)
+	fmt.Print(" at ")
+	fmt.Println(data.Timestamp)
 }

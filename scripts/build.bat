@@ -21,7 +21,10 @@ mkdir "%INSTALL_PATH%\%AIRPORT%\sensors\pressure"
 mkdir "%INSTALL_PATH%\%AIRPORT%\sensors\temperature"
 mkdir "%INSTALL_PATH%\%AIRPORT%\sensors\wind"
 mkdir "%INSTALL_PATH%\%AIRPORT%\pub"
-mkdir "%INSTALL_PATH%\%AIRPORT%\pub\log"
+mkdir "%INSTALL_PATH%\%AIRPORT%\log"
+mkdir "%INSTALL_PATH%\%AIRPORT%\log\temperature"
+mkdir "%INSTALL_PATH%\%AIRPORT%\log\pressure"
+mkdir "%INSTALL_PATH%\%AIRPORT%\log\wind"
 
 REM Move bins
 move "%GOPATH%\bin\pressure.exe" "%INSTALL_PATH%\%AIRPORT%\sensors\pressure\"
