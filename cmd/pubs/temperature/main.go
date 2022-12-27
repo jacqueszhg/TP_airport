@@ -43,7 +43,7 @@ func main() {
 	frequency, err := strconv.Atoi(sensor.Frequency)
 
 	if err == nil {
-		fmt.Println(urlBroker)
+		fmt.Println("Tempereture sensor")
 
 		client := mqttConfig.Connect(urlBroker, sensor.Id) //TODO
 		currentTime := time.Now()
@@ -52,7 +52,7 @@ func main() {
 		currentTemp := 0.0
 		// Infinit loop for publish each "frenquency" secondes
 		for {
-			currentTemp, oldLocation, oldTime = simulateTemp(SAISON["SUMMER"], LOCATION["EQUATOR"], currentTime, oldLocation, oldTime)
+			currentTemp, oldLocation, oldTime = simulateTemp(SAISON["SUMMER"], LOCATION["CONTINENTAL"], currentTime, oldLocation, oldTime)
 			msg := mqttConfig.MessageSensorPublisher{
 				SensorId:      sensorId,
 				SensorType:    "temperature",
@@ -65,7 +65,7 @@ func main() {
 			bytesMsg, err := json.Marshal(msg)
 
 			if err != nil {
-				fmt.Println("Can't serislize", msg)
+				fmt.Println("Can't serialize", msg)
 			}
 			tokenDB := client.Publish("airport/temperature", byte(QOSLevel), true, bytesMsg)
 			tokenLog := client.Publish("airport/log", byte(QOSLevel), true, bytesMsg)

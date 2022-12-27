@@ -14,10 +14,12 @@ type SensorConfig struct {
 	}
 
 	Sensor struct {
-		Id        string `yaml:"id"`
-		Airport   string `yaml:"airport"`
-		Frequency string `yaml:"frequency"`
-		QOSLevel  string `yaml:"QOSLevel"`
+		Id              string `yaml:"id"`
+		Airport         string `yaml:"airport"`
+		Frequency       string `yaml:"frequency"`
+		QOSLevel        string `yaml:"QOSLevel"`
+		AltitudeAirport string `yaml:"altitudeAirport"`
+		GroundPressure  string `yaml:"groundPressure"`
 	}
 }
 
