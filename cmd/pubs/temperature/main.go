@@ -54,11 +54,12 @@ func main() {
 		for {
 			currentTemp, oldLocation, oldTime = simulateTemp(SAISON["SUMMER"], LOCATION["CONTINENTAL"], currentTime, oldLocation, oldTime)
 			msg := mqttConfig.MessageSensorPublisher{
-				SensorId:    sensorId,
-				SensorType:  "temperature",
-				AirportCode: sensor.Airport,
-				Timestamp:   time.Now(),
-				Value:       currentTemp,
+				SensorId:      sensorId,
+				SensorType:    "temperature",
+				AirportCode:   sensor.Airport,
+				Timestamp:     time.Now(),
+				Value:         currentTemp,
+				UnitOfMeasure: "Celsius",
 			}
 
 			bytesMsg, err := json.Marshal(msg)

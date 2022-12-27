@@ -14,6 +14,7 @@ func main() {
 
 	client := mqttConfig.Connect("tcp://localhost:1883", "sub")
 	client.Subscribe("airport/temperature", 1, myHandler)
+	client.Subscribe("airport/pressure", 1, myHandler)
 
 	fmt.Printf("finish")
 	wg.Wait()

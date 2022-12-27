@@ -34,9 +34,10 @@ func Connect(brokerURI string, clientId string) mqtt.Client {
 
 // MessageSensorPublisher TODO faire un parse / unparse (pour pub et sub) qui va automatiquement récupérer les données
 type MessageSensorPublisher struct {
-	SensorId    int
-	SensorType  string
-	AirportCode string
-	Timestamp   time.Time
-	Value       float64
+	SensorId      int
+	SensorType    string
+	AirportCode   string
+	Timestamp     time.Time
+	Value         float64
+	UnitOfMeasure string
 }
