@@ -1,0 +1,164 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/airport/{airportCode}/averages": {
+            "get": {
+                "description": "Get averages of measures (temperature, pressure, wind) for a specific date",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "airport"
+                ],
+                "summary": "Return three averages (temperature, pressure, wind) for a specific date",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "airport code IATA",
+                        "name": "airportCode",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "start date (example : 2021-04-04T22:08:41Z)",
+                        "name": "date",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Average"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/helper.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/airport/{airportCode}/measure": {
+            "get": {
+                "description": "Get measurements of a certain type (temperature, wind, pressure) that are between two time (date + time)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "airport"
+                ],
+                "summary": "Return a list of value for one type (temperature, wind, pressure) between two time",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "airport code IATA",
+                        "name": "airportCode",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "sensor type (temperature, wind, pressure)",
+                        "name": "type",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "start date (example : 2021-04-04T22:08:41Z)",
+                        "name": "startDate",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "end date (example : 2021-04-04T22:08:41Z)",
+                        "name": "endDate",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Measure"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/helper.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "helper.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.Average": {
+            "type": "object",
+            "properties": {
+                "average": {
+                    "type": "number"
+                },
+                "sensortype": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Measure": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "airportid": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "sensorid": {
+                    "type": "string"
+                },
+                "sensortype": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "number"
+                }
+            }
+        }
+    }
+}
