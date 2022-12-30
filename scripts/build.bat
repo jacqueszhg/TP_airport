@@ -1,8 +1,8 @@
 @echo off
 
 REM Settings
-SET WORKDIR="C:\Users\jacqu\OneDrive\Documents\1.IMT_Atlantique_cours\Architecture_distribuer\cours2_GO\Projet"
-SET INSTALL_PATH="C:\Users\jacqu\Desktop\airport"
+SET WORKDIR="C:\Users\lucas\GolandProjects\TP_airport"
+SET INSTALL_PATH="%homedrive%%homepath%\airport"
 SET AIRPORT="NTE"
 
 REM Change directory to the workdir
