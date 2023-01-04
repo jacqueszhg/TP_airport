@@ -13,7 +13,6 @@ func setupRouter() *gin.Engine {
 	r := gin.Default()
 	// Disable Console Color
 	// gin.DisableConsoleColor()
-
 	// Allow cross origin
 	r.Use(cors.Default())
 

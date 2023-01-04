@@ -8,3 +8,4 @@ sensor:
   airport: 'NTE'
   frequency: 5
   QOSLevel: 1
+  altitudeAirport: 100
