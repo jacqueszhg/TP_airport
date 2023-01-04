@@ -55,7 +55,7 @@ func createDb() influxdb.Client {
  * Creating a WriteAPIBlocking with our database and organization/bucket
  */
 func createWriteAPI(db influxdb.Client) api.WriteAPIBlocking {
-	org := "yt.ryfax@gmail.com"
+	org := "airport"
 	bucket := "Sensors"
 	return db.WriteAPIBlocking(org, bucket)
 }
