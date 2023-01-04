@@ -19,7 +19,6 @@ type SensorConfig struct {
 		Frequency       string `yaml:"frequency"`
 		QOSLevel        string `yaml:"QOSLevel"`
 		AltitudeAirport string `yaml:"altitudeAirport"`
-		GroundPressure  string `yaml:"groundPressure"`
 	}
 }
 
