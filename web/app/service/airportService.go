@@ -1,6 +1,7 @@
 package service
 
 import (
+	"Airport/web/app/model"
 	"context"
 	"fmt"
 	influxdb "github.com/influxdata/influxdb-client-go/v2"
@@ -15,8 +16,41 @@ func getDbClient() influxdb.Client {
 }
 
 func getQueryAPI(client influxdb.Client) api.QueryAPI {
-	org := "yt.ryfax@gmail.com"
+	org := "airport"
 	return client.QueryAPI(org)
+}
+
+func GetMeasuresByAirportAndType(airportCode string, measurement string, startDate time.Time, endDate time.Time) []model.Measure {
+	client := getDbClient()
+	queryAPI := getQueryAPI(client)
+
+	bucket := "Sensors"
+	start := startDate.Format("2006-01-02T15:04:05Z")
+	stop := endDate.Format("2006-01-02T15:04:05Z")
+
+	query := fmt.Sprintf(`from(bucket: "%v") |> range(start: %v, stop: %v) |> filter(fn: (r) => r["airport"] == "%v") |> filter(fn: (r) => r["_measurement"] == "%v")`, bucket, start, stop, airportCode, measurement)
+	result, err := queryAPI.Query(context.Background(), query)
+	if err != nil {
+		panic(err)
+	}
+
+	var res []model.Measure
+	for result.Next() {
+		record := result.Record()
+		time := record.Time().Format("2006-01-02T15:04:05Z")
+
+		measure := model.Measure{
+			SensorId:    record.ValueByKey("id").(string),
+			AirportCode: airportCode,
+			Timestamp:   time,
+			Value:       record.Value().(float64),
+			SensorType:  record.Measurement(),
+		}
+
+		res = append(res, measure)
+	}
+
+	return res
 }
 
 func GetAveragesByDate(airportCode string, date time.Time) (float64, float64, float64) {
@@ -26,9 +60,7 @@ func GetAveragesByDate(airportCode string, date time.Time) (float64, float64, fl
 	bucket := "Sensors"
 	start := date.Format("2006-01-02T15:04:05Z")
 	stop := date.AddDate(0, 0, 1).Format("2006-01-02T15:04:05Z")
-	fmt.Println(start)
 	query := fmt.Sprintf(`from(bucket: "%v") |> range(start: %v, stop: %v) |> filter(fn: (r) => r["airport"] == "%v")`, bucket, start, stop, airportCode)
-	fmt.Println(query)
 	result, err := queryAPI.Query(context.Background(), query)
 	if err != nil {
 		panic(err)

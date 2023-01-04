@@ -130,24 +130,7 @@ func GetMeasures(g *gin.Context) {
 		return
 	}
 
-	var res []model.Measure
-	for _, element := range measure {
-		date, err := time.Parse(time.RFC3339, element.Timestamp)
-		if err != nil {
-			helper.GetError(
-				errors.New("Invalid date : correct format : 2021-04-04T22:08:41Z"),
-				g.Writer,
-				400,
-			)
-			return
-		}
-		if element.SensorType == sensorType &&
-			date.After(startDateConvert) &&
-			date.Before(endDateConvert) {
-			res = append(res, element)
-		}
-	}
-
+	res := service.GetMeasuresByAirportAndType(airportCode, sensorType, startDateConvert, endDateConvert)
 	g.JSON(http.StatusOK, res)
 }
 
