@@ -16,12 +16,12 @@ func simulatePressure(altitude float64) float64 {
 	// Calcule l'heure actuelle en secondes
 	heureActuelle := time.Now().Hour()*3600 + time.Now().Minute()*60 + time.Now().Second()
 
-	hauteur := 3.0                //hauteur du capteur par rapport au sol
+	hauteur := 3.0                //hauteur du capteur par rapport au sol en m
 	masseAir := 5.0               //maisse de l'air en kg
-	accelerationPesanteur := 9.81 //acceleration pesanteur en en m/s^2
+	accelerationPesanteur := 9.81 //acceleration pesanteur en m/s^2
 
 	// Calcule la pression atmosphérique en utilisant une sinusoïde et en tenant compte de l'altitude
-	pression := math.Sin(float64(heureActuelle)/(12*3600)*math.Pi)*masseAir*accelerationPesanteur*(hauteur+altitude) + 101325 // pression en Pascals
+	pression := math.Sin(float64(heureActuelle*600)/(12*3600)*math.Pi)*masseAir*accelerationPesanteur*(hauteur+altitude) + 101325 // pression en Pascals
 
 	hPaPression := pression / 100
 
