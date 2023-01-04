@@ -7,39 +7,25 @@ import (
 	"fmt"
 	"math"
 	_ "math"
-	"math/rand"
 	"strconv"
 	"time"
 )
 
-var SAISON = map[string]float64{
-	"SUMMER": 30.0,
-	"SPRING": 20.0,
-	"AUTUMN": 10.0,
-	"WINTER": 0.0,
-}
+func simulatePressure(altitude float64) float64 {
 
-var LOCATION = map[string]float64{
-	"EQUATOR":     10.0,
-	"CONTINENTAL": 5.0,
-	"NORTH_POLE":  2.0,
-	"SOUTH_POLE":  2.0,
-}
+	// Calcule l'heure actuelle en secondes
+	heureActuelle := time.Now().Hour()*3600 + time.Now().Minute()*60 + time.Now().Second()
 
-func simulateTemp(saison float64, location float64, time time.Time, oldLocation float64, oldTime float64) (float64, float64, float64) {
-	locationTemp := oldLocation + rand.Float64()*(location-oldLocation)
-	timeTemp := oldTime + rand.Float64()*((math.Sin(float64(time.Hour())/math.Pi)*location)-oldTime)
-	return saison + locationTemp - timeTemp, locationTemp, timeTemp
-}
+	hauteur := 3.0                //hauteur du capteur par rapport au sol
+	masseAir := 5.0               //maisse de l'air en kg
+	accelerationPesanteur := 9.81 //acceleration pesanteur en en m/s^2
 
-func simulatePressure(temperatureCelsius float64, altitudeMetre float64, pressionNiveauMerHPascal float64) float64 {
+	// Calcule la pression atmosphérique en utilisant une sinusoïde et en tenant compte de l'altitude
+	pression := math.Sin(float64(heureActuelle)/(12*3600)*math.Pi)*masseAir*accelerationPesanteur*(hauteur+altitude) + 101325 // pression en Pascals
 
-	temperatureKelvin := temperatureCelsius + 273.15
+	hPaPression := pression / 100
 
-	//Formule internationale du nivellement barométrique
-	res := pressionNiveauMerHPascal * math.Pow(1-(0.0065*altitudeMetre/temperatureKelvin), 5.255)
-
-	return res
+	return hPaPression
 }
 
 func main() {
@@ -52,28 +38,24 @@ func main() {
 	QOSLevel, err := strconv.Atoi(sensor.QOSLevel)
 	frequency, err := strconv.Atoi(sensor.Frequency)
 	altitudeAirport, err := strconv.Atoi(sensor.AltitudeAirport)
-	groundPressure, err := strconv.Atoi(sensor.GroundPressure)
 
 	if err == nil {
 		fmt.Println("Pressure sensor")
 
 		client := mqttConfig.Connect(urlBroker, sensor.Id)
 		currentTime := time.Now()
-		oldLocation := 0.0
-		oldTime := 0.0
-		currentTemp := 0.0
 
 		// Infinit loop for publish each "frenquency" secondes
 		for {
-			currentTemp, oldLocation, oldTime = simulateTemp(SAISON["SUMMER"], LOCATION["CONTINENTAL"], currentTime, oldLocation, oldTime)
-			currentPressure := simulatePressure(currentTemp, float64(altitudeAirport), float64(groundPressure))
+			currentPressure := simulatePressure(float64(altitudeAirport))
 
 			msg := mqttConfig.MessageSensorPublisher{
-				SensorId:    sensorId,
-				SensorType:  "pressure",
-				AirportCode: sensor.Airport,
-				Timestamp:   time.Now(),
-				Value:       currentPressure,
+				SensorId:      sensorId,
+				SensorType:    "pressure",
+				AirportCode:   sensor.Airport,
+				Timestamp:     time.Now(),
+				Value:         currentPressure,
+				UnitOfMeasure: "hPa",
 			}
 
 			bytesMsg, err := json.Marshal(msg)
@@ -81,7 +63,7 @@ func main() {
 			if err != nil {
 				fmt.Println("Can't serialize", msg)
 			}
-			tokenDB := client.Publish("airport/temperature", byte(QOSLevel), true, bytesMsg)
+			tokenDB := client.Publish("airport/pressure", byte(QOSLevel), true, bytesMsg)
 			tokenLog := client.Publish("airport/log", byte(QOSLevel), true, bytesMsg)
 			tokenDB.Wait()
 			tokenLog.Wait()

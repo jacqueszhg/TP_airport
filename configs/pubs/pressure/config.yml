@@ -9,6 +9,6 @@ sensor:
   frequency: 5
   QOSLevel: 1
   altitudeAirport: 100
-  groundPressure : 1013
+
 
 
