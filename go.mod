@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/eclipse/paho.mqtt.golang v1.4.2
+	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.8.2
 	github.com/influxdata/influxdb-client-go/v2 v2.12.1
 	github.com/swaggo/files v1.0.0

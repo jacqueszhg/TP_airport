@@ -3,6 +3,7 @@ package main
 import (
 	"Airport/web/app/controller"
 	docs "Airport/web/app/docs"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -12,6 +13,9 @@ func setupRouter() *gin.Engine {
 	r := gin.Default()
 	// Disable Console Color
 	// gin.DisableConsoleColor()
+
+	// Allow cross origin
+	r.Use(cors.Default())
 
 	// Get measures
 	r.GET("/airport/:airportCode/measure", controller.GetMeasures)
