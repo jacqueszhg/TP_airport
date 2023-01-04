@@ -12,6 +12,7 @@ type Measure struct {
 type Average struct {
 	SensorType string  `json:"sensortype"`
 	Average    float64 `json:"average"`
+	Unit       string  `json:"unit"`
 }
 
 type Airport struct {
