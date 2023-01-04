@@ -3,6 +3,7 @@ package controller
 import (
 	"Airport/web/app/helper"
 	"Airport/web/app/model"
+	"Airport/web/app/service"
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -158,7 +159,7 @@ func GetMeasures(g *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param   airportCode     path    string  true         	"airport code IATA"
-// @Param 	date	query 	string 	true  "start date (example : 2021-04-04T22:08:41Z)"
+// @Param 	date	query 	string 	true  "start date (example : 2021-04-04)"
 // @Success 200 {array} model.Average
 // @Failure 400 {object} helper.ErrorResponse
 // @Router /airport/{airportCode}/averages [get]
@@ -172,6 +173,7 @@ func GetAverages(g *gin.Context) {
 		)
 		return
 	}
+
 	date, isPresent := g.GetQuery("date")
 	if !isPresent {
 		helper.GetError(
@@ -181,31 +183,35 @@ func GetAverages(g *gin.Context) {
 		)
 		return
 	}
-	dateConvert, err := time.Parse(time.RFC3339, date)
-	if err != nil {
+
+	t, err := time.Parse("2006-01-02", date)
+	if err == nil {
+		temperatureAverage, pressureAverage, windAverage := service.GetAveragesByDate(airportCode, t)
+
+		g.JSON(http.StatusOK, []model.Average{
+			model.Average{
+				SensorType: "temperature",
+				Average:    temperatureAverage,
+				Unit:       "°C",
+			},
+			model.Average{
+				SensorType: "pressure",
+				Average:    pressureAverage,
+				Unit:       "hPa",
+			},
+			model.Average{
+				SensorType: "wind",
+				Average:    windAverage,
+				Unit:       "m/s",
+			},
+		})
+	} else {
 		helper.GetError(
-			errors.New("Invalid date : correct format : 2021-04-04T22:08:41Z"),
+			errors.New("Invalid date : correct format : 2021-04-04"),
 			g.Writer,
 			400,
 		)
 		return
 	}
 
-	// TODO : search in DB
-	fmt.Println(dateConvert)
-
-	g.JSON(http.StatusOK, []model.Average{
-		model.Average{
-			SensorType: "temperature",
-			Average:    45.0,
-		},
-		model.Average{
-			SensorType: "pressure",
-			Average:    45.8,
-		},
-		model.Average{
-			SensorType: "wind",
-			Average:    41.0,
-		},
-	})
 }

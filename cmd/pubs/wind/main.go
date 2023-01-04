@@ -10,16 +10,22 @@ import (
 	"time"
 )
 
-func getWind(min float64, max float64) float64 {
-	r := min + rand.Float64()*(max-min)
-	return r
+func getWind(lastValue float64) float64 {
+	r := -10 + rand.Float64()*(20)
+	newValue := lastValue + r
+	for r > 0.4 && r < 80 {
+		r = -10 + rand.Float64()*(20)
+		newValue = lastValue + r
+	}
+
+	return newValue
 }
 
 func main() {
 
-	sensor := config.GetSensorConfig("./config.yml").Sensor
-	mqtt := config.GetSensorConfig("./config.yml").MQTT
-
+	configPub := config.GetSensorConfig("./config.yml")
+	sensor := configPub.Sensor
+	mqtt := configPub.MQTT
 	urlBroker := mqtt.Protocol + "://" + mqtt.Url + ":" + mqtt.Port
 
 	sensorId, err := strconv.Atoi(sensor.Id)
@@ -36,14 +42,14 @@ func main() {
 				SensorType:    "wind",
 				AirportCode:   sensor.Airport,
 				Timestamp:     time.Now(),
-				Value:         getWind(0.4, 80),
+				Value:         getWind(0.4 + rand.Float64()*(80-0.4)), // modern wind detector can record wind speed between 0.4 m/s and 80 m/s (the global unit)
 				UnitOfMeasure: "m/s",
 			}
 
 			jsonMessage, jsonErr := json.Marshal(message)
 
 			if jsonErr == nil {
-				tokenDB := client.Publish("airport/temperature", byte(QOS), true, jsonMessage)
+				tokenDB := client.Publish("airport/wind", byte(QOS), true, jsonMessage)
 				tokenLog := client.Publish("airport/log", byte(QOS), true, jsonMessage)
 				tokenDB.Wait()
 				tokenLog.Wait()
