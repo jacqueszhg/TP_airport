@@ -10,14 +10,17 @@ cd "$WORKDIR"
 
 # Clean & Build
 go clean ./...
+
 if [ -d "$INSTALL_PATH" ] ; then
     rm -rd "$INSTALL_PATH"
 fi
+
 go install ./...
 
 # Making dir
 mkdir "$INSTALL_PATH/"
 mkdir "$INSTALL_PATH/$AIRPORT/"
+mkdir "$INSTALL_PATH/$AIRPORT/sub"
 mkdir "$INSTALL_PATH/$AIRPORT/sensors"
 mkdir "$INSTALL_PATH/$AIRPORT/sensors/pressure"
 mkdir "$INSTALL_PATH/$AIRPORT/sensors/temperature"
@@ -27,6 +30,8 @@ mkdir "$INSTALL_PATH/$AIRPORT/sensors/wind"
 mv "$GOPATH/bin/pressure" "$INSTALL_PATH/$AIRPORT/sensors/pressure/"
 mv "$GOPATH/bin/temperature" "$INSTALL_PATH/$AIRPORT/sensors/temperature/"
 mv "$GOPATH/bin/wind" "$INSTALL_PATH/$AIRPORT/sensors/wind/"
+mv "$GOPATH/bin/database-sub" "$INSTALL_PATH/$AIRPORT/sub"
+mv "$GOPATH/bin/log-sub" "$INSTALL_PATH/$AIRPORT/sub"
 
 # Move configs
 cp "$WORKDIR/configs/pubs/pressure/config.yml" "$INSTALL_PATH/$AIRPORT/sensors/pressure/"

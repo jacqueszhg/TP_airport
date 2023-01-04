@@ -30,6 +30,14 @@ func main() {
 		onDataReceived(message, writeApi)
 	})
 
+	client.Subscribe("airport/wind", 1, func(client mqtt.Client, message mqtt.Message) {
+		onDataReceived(message, writeApi)
+	})
+
+	client.Subscribe("airport/pressure", 1, func(client mqtt.Client, message mqtt.Message) {
+		onDataReceived(message, writeApi)
+	})
+
 	fmt.Printf("finish")
 	wg.Wait()
 }
