@@ -13,7 +13,7 @@
   "dependencies": {
     "chart.js": "^4.1.1",
     "pinia": "^2.0.28",
-    "scss": "^0.2.4",
+    "sass": "^1.57.1",
     "vue": "^3.2.45",
     "vue-chartjs": "^5.1.0",
     "vue-router": "^4.1.6"
