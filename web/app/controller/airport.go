@@ -13,57 +13,6 @@ import (
 
 // @BasePath /api/v1
 
-var airport = map[string]model.Airport{
-	"NTE": model.Airport{
-		Id:   "NTE",
-		City: "Nantes",
-		Name: "Charle",
-	},
-}
-
-var measure = map[string]model.Measure{
-	"1": model.Measure{
-		Id:          "1",
-		SensorId:    "1",
-		AirportCode: "NTE",
-		Timestamp:   "2022-04-03T21:08:41Z",
-		Value:       45.23,
-		SensorType:  "temperature",
-	},
-	"4": model.Measure{
-		Id:          "4",
-		SensorId:    "1",
-		AirportCode: "NTE",
-		Timestamp:   "2022-04-04T21:08:41Z",
-		Value:       45.23,
-		SensorType:  "temperature",
-	},
-	"8": model.Measure{
-		Id:          "8",
-		SensorId:    "1",
-		AirportCode: "NTE",
-		Timestamp:   "2022-04-04T21:08:41Z",
-		Value:       45.23,
-		SensorType:  "pressure",
-	},
-	"2": model.Measure{
-		Id:          "2",
-		SensorId:    "1",
-		AirportCode: "NTE",
-		Timestamp:   "2022-04-05T22:15:41Z",
-		Value:       45.23,
-		SensorType:  "temperature",
-	},
-	"3": model.Measure{
-		Id:          "3",
-		SensorId:    "1",
-		AirportCode: "NTE",
-		Timestamp:   "2022-04-04T23:08:41Z",
-		Value:       45.23,
-		SensorType:  "temperature",
-	},
-}
-
 // GetMeasures godoc
 // @Summary Return a list of value for one type (temperature, wind, pressure) between two time
 // @Description Get measurements of a certain type (temperature, wind, pressure) that are between two time (date + time)
@@ -80,14 +29,6 @@ var measure = map[string]model.Measure{
 // @Router /airport/{airportCode}/measure [get]
 func GetMeasures(g *gin.Context) {
 	airportCode, _ := g.Params.Get("airportCode")
-	if airport[airportCode].Id == "" {
-		helper.GetError(
-			errors.New("Airport code not found"),
-			g.Writer,
-			400,
-		)
-		return
-	}
 
 	sensorType, isPresent := g.GetQuery("type")
 	if !isPresent {
@@ -130,24 +71,7 @@ func GetMeasures(g *gin.Context) {
 		return
 	}
 
-	var res []model.Measure
-	for _, element := range measure {
-		date, err := time.Parse(time.RFC3339, element.Timestamp)
-		if err != nil {
-			helper.GetError(
-				errors.New("Invalid date : correct format : 2021-04-04T22:08:41Z"),
-				g.Writer,
-				400,
-			)
-			return
-		}
-		if element.SensorType == sensorType &&
-			date.After(startDateConvert) &&
-			date.Before(endDateConvert) {
-			res = append(res, element)
-		}
-	}
-
+	res := service.GetMeasuresByAirportAndType(airportCode, sensorType, startDateConvert, endDateConvert)
 	g.JSON(http.StatusOK, res)
 }
 
@@ -165,14 +89,6 @@ func GetMeasures(g *gin.Context) {
 // @Router /airport/{airportCode}/averages [get]
 func GetAverages(g *gin.Context) {
 	airportCode, _ := g.Params.Get("airportCode")
-	if airport[airportCode].Id == "" {
-		helper.GetError(
-			errors.New("Airport code not found"),
-			g.Writer,
-			400,
-		)
-		return
-	}
 
 	date, isPresent := g.GetQuery("date")
 	if !isPresent {
