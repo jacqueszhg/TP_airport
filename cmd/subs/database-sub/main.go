@@ -72,7 +72,7 @@ func onDataReceived(message mqtt.Message, api api.WriteAPIBlocking) {
 
 	tags := map[string]string{
 		"airport": r.AirportCode,
-		"id":      string(rune(r.SensorId)),
+		"id":      fmt.Sprintf("%d", r.SensorId),
 	}
 
 	fields := map[string]interface{}{
