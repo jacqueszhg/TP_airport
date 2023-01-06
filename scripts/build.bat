@@ -24,6 +24,7 @@ mkdir "%INSTALL_PATH%\log"
 mkdir "%INSTALL_PATH%\log\temperature"
 mkdir "%INSTALL_PATH%\log\pressure"
 mkdir "%INSTALL_PATH%\log\wind"
+mkdir "%INSTALL_PATH%\api"
 
 REM Move bins
 move "%GOPATH%\bin\pressure.exe" "%INSTALL_PATH%\%AIRPORT%\sensors\pressure\"
@@ -31,6 +32,7 @@ move "%GOPATH%\bin\temperature.exe" "%INSTALL_PATH%\%AIRPORT%\sensors\temperatur
 move "%GOPATH%\bin\wind.exe" "%INSTALL_PATH%\%AIRPORT%\sensors\wind\"
 move "%GOPATH%\bin\database-sub.exe" "%INSTALL_PATH%\sub"
 move "%GOPATH%\bin\log-sub.exe" "%INSTALL_PATH%\sub"
+move "%GOPATH%\bin\app.exe" "%INSTALL_PATH%\api"
 
 REM Move configs
 copy "%WORKDIR%\configs\pubs\pressure\config.yml" "%INSTALL_PATH%\%AIRPORT%\sensors\pressure\"
