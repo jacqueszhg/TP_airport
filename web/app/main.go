@@ -29,7 +29,7 @@ func main() {
 	r := setupRouter()
 	docs.SwaggerInfo.BasePath = "/"
 	ginSwagger.WrapHandler(swaggerfiles.Handler,
-		ginSwagger.URL("http://localhost:8080/swager/doc.jsong"),
+		ginSwagger.URL("http://localhost:8080/swagger/doc.jsong"),
 		ginSwagger.DefaultModelsExpandDepth(-1))
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
