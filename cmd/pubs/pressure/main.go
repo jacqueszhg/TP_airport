@@ -21,7 +21,7 @@ func simulatePressure(altitude float64) float64 {
 	accelerationPesanteur := 9.81 //acceleration pesanteur en m/s^2
 
 	// Calcule la pression atmosphérique en utilisant une sinusoïde et en tenant compte de l'altitude
-	pression := math.Sin(float64(heureActuelle*600)/(12*3600)*math.Pi)*masseAir*accelerationPesanteur*(hauteur+altitude) + 101325 // pression en Pascals
+	pression := math.Sin(float64(heureActuelle)/(12*3600)*math.Pi)*masseAir*accelerationPesanteur*(hauteur+altitude) + 101325 // pression en Pascals
 
 	hPaPression := pression / 100
 

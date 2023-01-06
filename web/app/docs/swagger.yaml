@@ -12,6 +12,8 @@ definitions:
         type: number
       sensortype:
         type: string
+      unit:
+        type: string
     type: object
   model.Measure:
     properties:
@@ -43,7 +45,7 @@ paths:
         name: airportCode
         required: true
         type: string
-      - description: 'start date (example : 2021-04-04T22:08:41Z)'
+      - description: 'start date (example : 2021-04-04)'
         in: query
         name: date
         required: true

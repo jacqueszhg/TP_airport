@@ -39,7 +39,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "start date (example : 2021-04-04T22:08:41Z)",
+                        "description": "start date (example : 2021-04-04)",
                         "name": "date",
                         "in": "query",
                         "required": true
@@ -145,6 +145,9 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "sensortype": {
+                    "type": "string"
+                },
+                "unit": {
                     "type": "string"
                 }
             }
