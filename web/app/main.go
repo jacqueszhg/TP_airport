@@ -22,6 +22,9 @@ func setupRouter() *gin.Engine {
 	// Get average
 	r.GET("/airport/:airportCode/averages", controller.GetAverages)
 
+	// Get all airport
+	r.GET("/airports", controller.GetAllAirport)
+
 	return r
 }
 

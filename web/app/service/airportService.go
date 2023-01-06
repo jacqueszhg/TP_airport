@@ -93,3 +93,25 @@ func GetAveragesByDate(airportCode string, date time.Time) (float64, float64, fl
 
 	return temperatureAverage, pressureAverage, windAverage
 }
+
+func GetAllAirports() []string {
+
+	client := getDbClient()
+	queryAPI := getQueryAPI(client)
+	query := fmt.Sprintf(`import "influxdata/influxdb/v1" v1.tagValues(bucket: "Sensors", tag:  "airport" )`)
+
+	result, err := queryAPI.Query(context.Background(), query)
+	if err != nil {
+		panic(err)
+	}
+
+	var liste []string
+
+	for result.Next() {
+		record := result.Record().ValueByKey("_value").(string)
+		liste = append(liste, record)
+	}
+	client.Close()
+	return liste
+
+}

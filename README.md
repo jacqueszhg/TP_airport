@@ -13,5 +13,6 @@ Executer le fichier ```script\run.sh``` ou ```script\run.bat``` en fonction de l
 Pour lancer l'API exécuter le fichier ```web\app\main.go``` à l'aide de la commande ```go run main.go```  
 La documentation swagger de l'API est à l'adresse : ```http://localhost:8080/swagger/index.html ```
 
+Pour mettre à jour la doc swagger : ```swag init```
 ### IHM
 Pour lancer l'IHM ```npm run dev```

@@ -131,3 +131,22 @@ func GetAverages(g *gin.Context) {
 	}
 
 }
+
+// GetAllAirport godoc
+// @Summary Return all the airport in DB
+// @Description Return all the airport in DB
+// @Schemes
+// @Tags airport
+// @Produce json
+// @Success 200 {array} string
+// @Failure 400 {object} helper.ErrorResponse
+// @Router /airports [get]
+func GetAllAirport(g *gin.Context) {
+
+	//liste des codes IATA présent en base
+	var liste = service.GetAllAirports()
+
+	g.JSON(http.StatusOK, liste)
+
+	return
+}

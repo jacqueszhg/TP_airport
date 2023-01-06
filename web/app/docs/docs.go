@@ -39,7 +39,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "start date (example : 2021-04-04T22:08:41Z)",
+                        "description": "start date (example : 2021-04-04)",
                         "name": "date",
                         "in": "query",
                         "required": true
@@ -124,6 +124,35 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/airports": {
+            "get": {
+                "description": "Return all the airport in DB",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "airport"
+                ],
+                "summary": "Return all the airport in DB",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/helper.ErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -145,6 +174,9 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "sensortype": {
+                    "type": "string"
+                },
+                "unit": {
                     "type": "string"
                 }
             }
