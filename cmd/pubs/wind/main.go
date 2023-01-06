@@ -17,7 +17,6 @@ func getWind(lastValue float64) float64 {
 		r = -10 + rand.Float64()*(20)
 		newValue = lastValue + r
 	}
-
 	return newValue
 }
 

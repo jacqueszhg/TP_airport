@@ -17,23 +17,32 @@ const (
 	L  = -0.0065 // Lapse rate, en kelvins/mètre
 )
 
-// Fonction qui calcule le nombre de minutes écoulées depuis le début de la journée
-func elapsedMinutes() float64 {
-	now := time.Now()
-	return float64(now.Hour()*60 + now.Minute())
+// Fonction qui calcule la température de l'air en fonction de l'altitude, du temps écoulé et de la saison
+func temperature(altitude float64, time time.Time, season string) float64 {
+	// Ajout d'une correction en fonction de la saison
+	correctionSeason := 0.0
+	if season == "été" {
+		correctionSeason = 5.0
+	} else if season == "hiver" {
+		correctionSeason = -5.0
+	}
+	groundTemp := groundTemperature(time, season)
+	tempWithAltitude := temperatureWithAltitude(altitude)
+	return tempWithAltitude + groundTemp + correctionSeason
 }
 
-// Fonction qui calcule la température de l'air en fonction de l'altitude, du temps écoulé et de la saison
-func temperature(altitude, time float64, season string) float64 {
-	// Ajout d'une correction en fonction de la saison
-	correction := 0.0
-	if season == "été" {
-		correction = 5.0
-	} else if season == "hiver" {
-		correction = -5.0
-	}
+func temperatureWithAltitude(altitude float64) float64 {
+	return T0 + L*altitude
+}
 
-	return T0 + L*altitude - L*time + correction
+func groundTemperature(time time.Time, season string) float64 {
+	coef := 3.0 // écart de température air/sol en moyenne
+	if season == "été" {
+		coef = 5.0
+	} else if season == "hiver" {
+		coef = 2.0
+	}
+	return math.Sin(float64(time.Hour()+(time.Minute()/60)+(time.Second()/3600))*math.Pi/24) * coef
 }
 
 // Fonction qui renvoie la saison de la date donnée
@@ -76,19 +85,17 @@ func main() {
 	QOSLevel, err := strconv.Atoi(sensor.QOSLevel)
 	frequency, err := strconv.Atoi(sensor.Frequency)
 	altitude, err := strconv.Atoi(sensor.AltitudeAirport)
+	now := time.Now()
 	if err == nil {
 		fmt.Println("Tempereture sensor")
 		client := mqttConfig.Connect(urlBroker, sensor.Id) //TODO
 		// Infinit loop for publish each "frenquency" secondes
 		for {
-			// Calcul du temps écoulé depuis le début de la journée, en minutes
-			elapsedTime := elapsedMinutes()
 
-			// Récupération de la date et de la saison actuelles
-			now := time.Now()
+			// Récupération de la saison actuelles
 			season := findSeason(now)
 			// Calcul de la température en fonction de l'altitude, du temps écoulé et de la saison
-			temp := temperature(float64(altitude), elapsedTime, season)
+			temp := temperature(float64(altitude), now, season)
 
 			tempC := temp - 273.5
 
@@ -97,7 +104,7 @@ func main() {
 				SensorType:    "temperature",
 				AirportCode:   sensor.Airport,
 				Timestamp:     time.Now(),
-				Value:         math.Round(tempC*100) / 100,
+				Value:         tempC,
 				UnitOfMeasure: "Celsius",
 			}
 
@@ -112,10 +119,13 @@ func main() {
 			tokenLog.Wait()
 
 			// Affichage de la température
-			fmt.Printf("La température à %v mètres d'altitude est de %.2f °C.\n", altitude, tempC)
+			fmt.Printf("[%dH] La température à %v mètres d'altitude est de %f °C.\n", now.Hour(), altitude, tempC)
 
 			// Attente de 10 secondes
 			time.Sleep(time.Duration(frequency) * time.Second)
+			//time.Sleep(time.Duration(frequency) / 10 * time.Second)
+			now = now.Add(time.Duration(frequency) * time.Second)
+			//now = now.Add(1 * time.Hour)
 		}
 	}
 }
