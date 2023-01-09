@@ -1,19 +1,20 @@
 @echo off
 
 REM Settings
+REM Get the current directory
 SET FILEPATH=%~dp0
+REM Get only the root project directory
 SET WORKDIR="%FILEPATH:~0,-9%"
 REM Set the path of your project installation
-SET INSTALL_PATH="C:\Users\jacqu\Desktop\airport"
+SET INSTALL_PATH="C:\airportInstall"
 REM Set the airport IATA code
-SET AIRPORT="LIEA"
+SET AIRPORT="AHO"
 
 REM Change directory to the workdir
 cd %WORKDIR%
 
 REM Clean & Build
 go clean .\...
-REM rmdir /S /Q "%INSTALL_PATH%"
 go install .\...
 
 REM Making dir
