@@ -9,6 +9,3 @@ sensor:
   frequency: 10
   QOSLevel: 1
   altitudeAirport: 100
-
-
-

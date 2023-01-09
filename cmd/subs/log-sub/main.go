@@ -1,6 +1,7 @@
 package main
 
 import (
+	"Airport/internal/pkg/config"
 	mqttConfig "Airport/internal/pkg/mqtt"
 	"encoding/csv"
 	"encoding/json"
@@ -14,8 +15,10 @@ import (
 func main() {
 	wg := sync.WaitGroup{}
 	wg.Add(2)
+	configSub := config.GetSubonfig("./logConfig.yml")
 
-	client := mqttConfig.Connect("tcp://localhost:1883", "log")
+	// Connect to mqtt
+	client := mqttConfig.Connect(configSub.MQTT.Protocol+"://"+configSub.MQTT.Url+":"+configSub.MQTT.Port, configSub.MQTT.Id)
 	client.Subscribe("airport/log", 1, handler)
 
 	wg.Wait()
@@ -31,7 +34,7 @@ func handler(client mqtt.Client, message mqtt.Message) {
 	}
 
 	// Create the path for save the CSV
-	pathFile := "../log/%sensorType/%airport-%date-%sensorType.csv"
+	pathFile := "../%airport/log/%sensorType/%airport-%date-%sensorType.csv"
 	date := res.Timestamp.Format("2006-01-02")
 	pathFile = strings.ReplaceAll(pathFile, "%sensorType", res.SensorType)
 	pathFile = strings.ReplaceAll(pathFile, "%airport", res.AirportCode)

@@ -1,0 +1,5 @@
+mqtt:
+  protocol: 'tcp'
+  url: 'localhost'
+  port: '1883'
+  id: 'sub-log'

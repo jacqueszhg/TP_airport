@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"math"
 	_ "math"
+	"math/rand"
 	"strconv"
 	"time"
 )
@@ -18,7 +19,7 @@ const (
 )
 
 // Fonction qui calcule la température de l'air en fonction de l'altitude, du temps écoulé et de la saison
-func temperature(altitude float64, time time.Time, season string) float64 {
+func temperature(altitude float64, timeT time.Time, season string) float64 {
 	// Ajout d'une correction en fonction de la saison
 	correctionSeason := 0.0
 	if season == "été" {
@@ -26,9 +27,13 @@ func temperature(altitude float64, time time.Time, season string) float64 {
 	} else if season == "hiver" {
 		correctionSeason = -5.0
 	}
-	groundTemp := groundTemperature(time, season)
+	groundTemp := groundTemperature(timeT, season)
 	tempWithAltitude := temperatureWithAltitude(altitude)
-	return tempWithAltitude + groundTemp + correctionSeason
+
+	// Pour voir des légères variations
+	rand.Seed(time.Now().UnixNano())
+	randomRange := rand.Float64()
+	return tempWithAltitude + groundTemp + correctionSeason + randomRange
 }
 
 func temperatureWithAltitude(altitude float64) float64 {

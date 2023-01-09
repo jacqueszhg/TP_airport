@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"math"
 	_ "math"
+	"math/rand"
 	"strconv"
 	"time"
 )
@@ -25,7 +26,11 @@ func simulatePressure(altitude float64) float64 {
 
 	hPaPression := pression / 100
 
-	return hPaPression
+	// Pour voir des légères variations
+	rand.Seed(time.Now().UnixNano())
+	randomRange := rand.Float64()
+
+	return hPaPression + randomRange
 }
 
 func main() {

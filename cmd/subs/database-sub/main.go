@@ -1,6 +1,7 @@
 package main
 
 import (
+	"Airport/internal/pkg/config"
 	mqttConfig "Airport/internal/pkg/mqtt"
 	"context"
 	"encoding/json"
@@ -17,13 +18,14 @@ import (
 func main() {
 	wg := sync.WaitGroup{}
 	wg.Add(2)
+	configSub := config.GetSubonfig("./databaseConfig.yml")
 
 	// Initialize Influx DB
 	db := createDb()
 	writeApi := createWriteAPI(db)
 
 	// Connect to mqtt
-	client := mqttConfig.Connect("tcp://localhost:1883", "sub")
+	client := mqttConfig.Connect(configSub.MQTT.Protocol+"://"+configSub.MQTT.Url+":"+configSub.MQTT.Port, configSub.MQTT.Id)
 
 	// Subscribe to all sensors
 	client.Subscribe("airport/temperature", 1, func(client mqtt.Client, message mqtt.Message) {
