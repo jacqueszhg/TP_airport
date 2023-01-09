@@ -7,5 +7,5 @@ sensor:
   id: 1
   airport: 'NTE'
   frequency: 10
-  QOSLevel: 1
+  QOSLevel: 0
   altitudeAirport: 100

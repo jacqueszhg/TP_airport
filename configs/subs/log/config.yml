@@ -3,4 +3,4 @@ mqtt:
   url: 'localhost'
   port: '1883'
   id: 'sub-log'
-  QOSLevel: 1
+  QOSLevel: 0
