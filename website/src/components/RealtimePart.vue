@@ -9,6 +9,7 @@
           :min="960"
           :max="1030"
           :airport="airport"
+          :period="long"
           color="#8455E9"
       />
     </div>
@@ -22,6 +23,7 @@
           :min="0"
           :max="40"
           :airport="airport"
+          :period="long"
           color="#5ADD77"
       />
     </div>
@@ -35,6 +37,7 @@
           :min="0"
           :max="80"
           :airport="airport"
+          :period="long"
           color="#E03BB2"
       />
     </div>
@@ -48,7 +51,8 @@ export default {
   name: "RealtimePart",
   components: {RealtimeChart},
   props: {
-    airport: { type: String }
+    airport: { type: String },
+    long: { type: Number }
   }
 }
 </script>

@@ -10,7 +10,11 @@
           class="select"
           @input="updateInput"
       >
-        <option v-for="airport in airports">{{ airport }}</option>
+        <option value="1">1 minute</option>
+        <option selected value="10">10 minutes</option>
+        <option value="60">1 heure</option>
+        <option value="1440">1 jour</option>
+        <option value="10080">1 semaine</option>
       </select>
     </div>
   </div>
@@ -18,7 +22,7 @@
 
 <script>
 export default {
-  name: "InputAirport",
+  name: "InputLong",
   props: {
     id: {
       type: String,
@@ -33,20 +37,10 @@ export default {
       default: "",
     }
   },
-  data() {
-    return {
-      airports: []
-    }
-  },
   mounted() {
-    this.loadOptions();
+    this.$emit("update:modelValue", 10);
   },
   methods: {
-    async loadOptions() {
-      this.airports = await fetch(`http://localhost:8080/airports`).then(api => api.json())
-
-      this.$emit("update:modelValue", this.airports[0]);
-    },
     updateInput(event) {
       this.$emit("update:modelValue", event.target.value);
     }
@@ -57,6 +51,7 @@ export default {
 <style lang="scss" scoped>
 .label {
   display: block;
+  margin-top: 20px;
   color: #A39CAD;
 }
 
