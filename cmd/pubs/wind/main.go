@@ -11,17 +11,48 @@ import (
 	"time"
 )
 
-func getWind(lastValue float64) float64 {
-	r := rand.Float64()*30 - 15
-	newValue := lastValue + r
+func findSeason(date time.Time) string {
+	year, month, day := date.Date()
 
-	if newValue < 0.4 {
-		return 0.4
-	} else if newValue > 80 {
-		return 80
-	} else {
-		return newValue
+	// Calcul du jour de l'année
+	n := float64(time.Date(year, month, day, 0, 0, 0, 0, time.UTC).YearDay())
+
+	// Calcul de la saison
+	if month == time.December || month == time.January || month == time.February {
+		if n >= 355 || n < 79 {
+			return "winter"
+		}
+	} else if month == time.March || month == time.April || month == time.May {
+		if n >= 79 && n < 171 {
+			return "spring"
+		}
+	} else if month == time.June || month == time.July || month == time.August {
+		if n >= 171 && n < 264 {
+			return "summer"
+		}
+	} else if month == time.September || month == time.October || month == time.November {
+		if n >= 264 && n < 355 {
+			return "autumn"
+		}
 	}
+
+	// Saison inconnue
+	return "inconnu"
+}
+
+func getWind() float64 {
+	season := findSeason(time.Now())
+	r := 0.0
+	if season == "summer" {
+		r = rand.Float64()*(16-9) + 9
+	} else if season == "winter" {
+		r = rand.Float64()*(9-4) + 4
+	} else if season == "spring" {
+		r = rand.Float64()*(11-7) + 7
+	} else if season == "spring" {
+		r = rand.Float64()*(15-11) + 11
+	}
+	return r
 }
 
 func main() {
@@ -45,7 +76,7 @@ func main() {
 				SensorType:    "wind",
 				AirportCode:   sensor.Airport,
 				Timestamp:     time.Now(),
-				Value:         getWind(0.4 + rand.Float64()*(80-0.4)), // modern wind detector can record wind speed between 0.4 m/s and 80 m/s (the global unit)
+				Value:         getWind(), // modern wind detector can record wind speed between 0.4 m/s and 80 m/s (the global unit)
 				UnitOfMeasure: "m/s",
 			}
 
@@ -58,7 +89,7 @@ func main() {
 				tokenLog.Wait()
 				time.Sleep(time.Duration(frequency) * time.Second)
 			}
-			fmt.Print(message)
+			fmt.Println(message)
 		}
 	}
 
