@@ -39,6 +39,7 @@ export default {
         },
         grid: {
           borderColor: 'rgb(59,54,82)',
+          strokeDashArray: 7,
         },
         dataLabels: {
           enabled: false

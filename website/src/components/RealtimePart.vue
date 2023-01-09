@@ -6,7 +6,7 @@
       <RealtimeChart
           class="chart"
           sensor="pressure"
-          :min="980"
+          :min="960"
           :max="1030"
           :airport="airport"
           color="#8455E9"
@@ -68,7 +68,7 @@ export default {
     width: 100%;
     background-color: #1C1A1F;
     border-radius: 15px;
-    padding: 10px;
+    padding: 20px;
 
     .chart {
       height: 100%;

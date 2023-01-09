@@ -72,17 +72,17 @@ export default {
         temp: {
           average: 0,
           ratio: 0,
-          unit: ''
+          unit: '°C'
         },
         wind: {
           average: 0,
           ratio: 0,
-          unit: ''
+          unit: 'm/s'
         },
         pressure: {
           average: 0,
           ratio: 0,
-          unit: ''
+          unit: 'hPa'
         },
       }
     }
@@ -111,6 +111,7 @@ export default {
 
 <style lang="scss" scoped>
 .average-part {
+  margin-top: 20px;
   gap: 20px;
   display: flex;
   align-content: center;
@@ -118,16 +119,15 @@ export default {
 
   .average-card {
     position: relative;
-
     width: 100%;
     max-width: 350px;
     background-color: #1C1A1F;
     border-radius: 15px;
-    padding: 10px;
+    padding: 20px;
 
     .average-card-value-container {
-      width: calc(100% - 20px);
-      bottom: 30px;
+      width: calc(100% - 40px);
+      bottom: 40px;
       position: absolute;
       display: flex;
       flex-flow: column;
