@@ -38,6 +38,7 @@ move "%GOPATH%\bin\database-sub.exe" "%INSTALL_PATH%\sub"
 move "%GOPATH%\bin\log-sub.exe" "%INSTALL_PATH%\sub"
 move "%GOPATH%\bin\app.exe" "%INSTALL_PATH%\api"
 
+
 REM Move configs
 copy "%WORKDIR%\configs\pubs\pressure\config.yml" "%INSTALL_PATH%\%AIRPORT%\sensors\pressure\"
 copy "%WORKDIR%\configs\pubs\temperature\config.yml" "%INSTALL_PATH%\%AIRPORT%\sensors\temperature\"
