@@ -35,7 +35,7 @@
           class="chart"
           sensor="wind"
           :min="0"
-          :max="80"
+          :max="30"
           :airport="airport"
           :period="long"
           color="#E03BB2"
