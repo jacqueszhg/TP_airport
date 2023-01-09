@@ -13,7 +13,7 @@ Pour lancer le broquer MQTT Mosquitto, la connexion à la base de données, les 
 
 ### Lancer tous les sensors 
 Pour lancer tous les sensors d'un aéroport exécuter le fichier ```runsensors.bat``` présent dans le dossier de l'aéroport nommé avec son code IATA
-#### Configuratio des sensors
+#### Configuration des sensors
 Chaque sensors possède un fichier `config.yml` placer avec son exécutable
 ```
 // Connexion au broker mosquitto
