@@ -29,7 +29,7 @@ func handler(client mqtt.Client, message mqtt.Message) {
 	var res mqttConfig.MessageSensorPublisher
 	err := json.Unmarshal(message.Payload(), &res)
 	if err != nil {
-		fmt.Println("Can't deserislize", message.Payload())
+		fmt.Println("Can't deserialize", message.Payload())
 		fmt.Println(err)
 	}
 

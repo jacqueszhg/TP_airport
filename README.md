@@ -1,7 +1,7 @@
 # Projet Golang
 
 ### Build du projet 
-Pour build le projet, exécuter le fichier ```script\build.sh``` ou ```script\build.bat```en fonction de l'OS
+Pour build le projet, exécuter le fichier ```script\build.bat```
 #### Configuration du build
 ```
 SET INSTALL_PATH="C:\Users\lucas\airport" // le dossier pour générer tout les éxécutables
