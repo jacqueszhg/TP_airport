@@ -4,7 +4,7 @@ REM Settings
 SET FILEPATH=%~dp0
 SET WORKDIR="%FILEPATH:~0,-9%"
 REM Set the path of your project installation
-SET INSTALL_PATH="C:\Users\jacqu\Desktop\airport"
+SET INSTALL_PATH="C:\Users\lucas\airport"
 REM Set the airport IATA code
 SET AIRPORT="NTE"
 
@@ -38,12 +38,9 @@ move "%GOPATH%\bin\database-sub.exe" "%INSTALL_PATH%\sub"
 move "%GOPATH%\bin\log-sub.exe" "%INSTALL_PATH%\sub"
 move "%GOPATH%\bin\app.exe" "%INSTALL_PATH%\api"
 
-
 REM Move configs
 copy "%WORKDIR%\configs\pubs\pressure\config.yml" "%INSTALL_PATH%\%AIRPORT%\sensors\pressure\"
 copy "%WORKDIR%\configs\pubs\temperature\config.yml" "%INSTALL_PATH%\%AIRPORT%\sensors\temperature\"
 copy "%WORKDIR%\configs\pubs\wind\config.yml" "%INSTALL_PATH%\%AIRPORT%\sensors\wind\"
-copy "%WORKDIR%\configs\subs\database\config.yml" "%INSTALL_PATH%\sub\databaseConfig.yml"
-copy "%WORKDIR%\configs\subs\log\config.yml" "%INSTALL_PATH%\sub\logConfig.yml"
 copy "%WORKDIR%\scripts\runservices.bat" "%INSTALL_PATH%\"
 copy "%WORKDIR%\scripts\runsensors.bat" "%INSTALL_PATH%\%AIRPORT%\"
