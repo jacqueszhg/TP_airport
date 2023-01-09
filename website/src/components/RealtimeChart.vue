@@ -53,6 +53,11 @@ export default {
         xaxis: {
           type: 'datetime',
           range: 1000 * 60 * MIN,
+          labels: {
+            style: {
+              colors: '#A39CAD'
+            }
+          },
           axisBorder: {
             show: false,
           },
@@ -65,7 +70,12 @@ export default {
         },
         yaxis: {
           max: this.max,
-          min: this.min
+          min: this.min,
+          labels: {
+            style: {
+              colors: '#A39CAD'
+            }
+          }
         },
         legend: {
           show: false

@@ -66,6 +66,7 @@ export default {
   width: min-content;
 
   .select {
+    border-radius: 10px;
     width: 200px;
     cursor: pointer;
     appearance: none;
