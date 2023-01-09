@@ -10,7 +10,7 @@ Pour lancer le broquer MQTT Mosquitto, la connexion à la base de données, les 
 Pour lancer tous les sensors d'un aéroport exécuter le fichier ```runsensors.bat``` présent dans le dossier de l'aéroport nommé avec son code IATA 
 
 ### IHM
-Pour lancer l'IHM ```npm run dev```
+Pour lancer l'IHM `npm install` ```npm run dev```
 
 ### Lancer les servies indépendamment
 
