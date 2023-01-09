@@ -42,10 +42,11 @@ func main() {
 
 	fmt.Printf("finish")
 	wg.Wait()
+	db.Close()
 }
 
 /*
- * Creating the influx database with the corresponding token and url
+ * Creating the influx client with the corresponding token and url to connect with database
  */
 func createDb() influxdb.Client {
 	token := "IJERnyHz_xzjSMxSRh2lL1OO7IxXhBXj-0UFf3V2FOguLu-lINu_st8o4swU_005YJL8vD7oNAq24F8QWnZm3Q=="

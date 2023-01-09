@@ -71,6 +71,7 @@ func GetMeasures(g *gin.Context) {
 		return
 	}
 
+	// get result from service
 	res := service.GetMeasuresByAirportAndType(airportCode, sensorType, startDateConvert, endDateConvert)
 	g.JSON(http.StatusOK, res)
 }
@@ -102,6 +103,7 @@ func GetAverages(g *gin.Context) {
 
 	t, err := time.Parse("2006-01-02", date)
 	if err == nil {
+		// get all averages for the tree sensors
 		temperatureAverage, pressureAverage, windAverage := service.GetAveragesByDate(airportCode, t)
 
 		g.JSON(http.StatusOK, []model.Average{
