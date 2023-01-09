@@ -1,15 +1,20 @@
 <script setup lang="ts">
-import LineGraph from "@/components/LineGraph.vue";
+import AveragePart from "@/components/AveragePart.vue";
+import RealtimePart from "@/components/RealtimePart.vue";
 </script>
 
 <template>
-  <Suspense>
-    <LineGraph sensor-type="temperature"/>
-  </Suspense>
-  <Suspense>
-    <LineGraph sensor-type="wind"/>
-  </Suspense>
-  <Suspense>
-    <LineGraph sensor-type="pressure"/>
-  </Suspense>
+  <div class="container">
+    <Suspense>
+      <AveragePart
+          airport="NTE"
+      />
+    </Suspense>
+
+    <Suspense>
+      <RealtimePart
+          airport="NTE"
+      />
+    </Suspense>
+  </div>
 </template>
