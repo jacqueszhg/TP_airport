@@ -24,9 +24,6 @@ func simulatePressure(altitude float64) float64 {
 	// Calcule la pression atmosphérique en utilisant une sinusoïde et en tenant compte de l'altitude
 	pression := math.Sin(float64(heureActuelle)/(12*3600)*math.Pi)*masseAir*accelerationPesanteur*(hauteur+altitude) + 101325 // pression en Pascals
 
-	fmt.Println(float64(heureActuelle))
-	fmt.Println(float64(heureActuelle) / (12 * 3600))
-
 	hPaPression := pression / 100
 
 	// Pour voir des légères variations
