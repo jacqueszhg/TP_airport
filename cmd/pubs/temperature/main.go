@@ -128,9 +128,7 @@ func main() {
 
 			// Attente de 10 secondes
 			time.Sleep(time.Duration(frequency) * time.Second)
-			//time.Sleep(time.Duration(frequency) / 10 * time.Second)
 			now = now.Add(time.Duration(frequency) * time.Second)
-			//now = now.Add(1 * time.Hour)
 		}
 	}
 }
