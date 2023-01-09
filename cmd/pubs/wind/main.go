@@ -40,7 +40,7 @@ func findSeason(date time.Time) string {
 	return "inconnu"
 }
 
-func getWind() float64 {
+func getWind(altitude int) float64 {
 	season := findSeason(time.Now())
 	r := 0.0
 	if season == "summer" {
@@ -49,9 +49,11 @@ func getWind() float64 {
 		r = rand.Float64()*(9-4) + 4
 	} else if season == "spring" {
 		r = rand.Float64()*(11-7) + 7
-	} else if season == "spring" {
+	} else if season == "autumn" {
 		r = rand.Float64()*(15-11) + 11
 	}
+
+	r += float64(altitude / 500)
 	return r
 }
 
@@ -65,6 +67,7 @@ func main() {
 	sensorId, err := strconv.Atoi(sensor.Id)
 	QOS, err := strconv.Atoi(sensor.QOSLevel)
 	frequency, err := strconv.Atoi(sensor.Frequency)
+	altitude, err := strconv.Atoi(sensor.AltitudeAirport)
 
 	if err == nil {
 
@@ -76,7 +79,7 @@ func main() {
 				SensorType:    "wind",
 				AirportCode:   sensor.Airport,
 				Timestamp:     time.Now(),
-				Value:         getWind(), // modern wind detector can record wind speed between 0.4 m/s and 80 m/s (the global unit)
+				Value:         getWind(altitude), // modern wind detector can record wind speed between 0.4 m/s and 80 m/s (the global unit)
 				UnitOfMeasure: "m/s",
 			}
 
