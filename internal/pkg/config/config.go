@@ -28,6 +28,7 @@ type PubConfig struct {
 		Url      string `yaml:"url"`
 		Port     string `yaml:"port"`
 		Id       string `yaml:"id"`
+		QOSLevel int    `yaml:"QOSLevel"`
 	}
 }
 

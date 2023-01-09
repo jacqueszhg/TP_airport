@@ -3,4 +3,5 @@ mqtt:
   url: 'localhost'
   port: '1883'
   id: 'sub-database'
+  QOSLevel: 1
 

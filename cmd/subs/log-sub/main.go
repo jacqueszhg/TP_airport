@@ -19,7 +19,7 @@ func main() {
 
 	// Connect to mqtt
 	client := mqttConfig.Connect(configSub.MQTT.Protocol+"://"+configSub.MQTT.Url+":"+configSub.MQTT.Port, configSub.MQTT.Id)
-	client.Subscribe("airport/log", 1, handler)
+	client.Subscribe("airport/log", byte(configSub.MQTT.QOSLevel), handler)
 	fmt.Println("finish")
 	wg.Wait()
 }

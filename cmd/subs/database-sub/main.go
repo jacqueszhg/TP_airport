@@ -28,15 +28,15 @@ func main() {
 	client := mqttConfig.Connect(configSub.MQTT.Protocol+"://"+configSub.MQTT.Url+":"+configSub.MQTT.Port, configSub.MQTT.Id)
 
 	// Subscribe to all sensors
-	client.Subscribe("airport/temperature", 1, func(client mqtt.Client, message mqtt.Message) {
+	client.Subscribe("airport/temperature", byte(configSub.MQTT.QOSLevel), func(client mqtt.Client, message mqtt.Message) {
 		onDataReceived(message, writeApi)
 	})
 
-	client.Subscribe("airport/wind", 1, func(client mqtt.Client, message mqtt.Message) {
+	client.Subscribe("airport/wind", byte(configSub.MQTT.QOSLevel), func(client mqtt.Client, message mqtt.Message) {
 		onDataReceived(message, writeApi)
 	})
 
-	client.Subscribe("airport/pressure", 1, func(client mqtt.Client, message mqtt.Message) {
+	client.Subscribe("airport/pressure", byte(configSub.MQTT.QOSLevel), func(client mqtt.Client, message mqtt.Message) {
 		onDataReceived(message, writeApi)
 	})
 
