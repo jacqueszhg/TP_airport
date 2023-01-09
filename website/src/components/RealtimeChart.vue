@@ -3,8 +3,6 @@
 </template>
 
 <script>
-const MIN = 5;
-
 export default {
   name: "RealtimeChart",
   props: {
@@ -13,6 +11,7 @@ export default {
     sensor: { type: String },
     min: { type: Number },
     max: { type: Number },
+    period: { type: Number },
   },
   data() {
     return {
@@ -52,7 +51,7 @@ export default {
         },
         xaxis: {
           type: 'datetime',
-          range: 1000 * 60 * MIN,
+          range: 1000 * 60 * this.period,
           labels: {
             style: {
               colors: '#A39CAD'
@@ -90,10 +89,11 @@ export default {
   },
   methods: {
     async updateChart() {
+      console.log(this.period)
       const from = new Date();
       const to = new Date();
 
-      from.setMinutes(-MIN);
+      from.setMinutes(-this.period);
 
       const json = await (await fetch(`http://localhost:8080/airport/${this.airport}/measure?type=${this.sensor}&startDate=${from.toISOString()}&endDate=${to.toISOString()}`)).json()
 

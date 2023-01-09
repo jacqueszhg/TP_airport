@@ -3,6 +3,7 @@ import AveragePart from "@/components/AveragePart.vue";
 import RealtimePart from "@/components/RealtimePart.vue";
 import HeaderPart from "@/components/HeaderPart.vue";
 import InputAiport from "@/components/InputAirport.vue";
+import InputLong from "@/components/InputLong.vue";
 </script>
 
 <template>
@@ -22,9 +23,16 @@ import InputAiport from "@/components/InputAirport.vue";
       />
     </Suspense>
 
+    <InputLong
+        id="long"
+        label="Period"
+        v-model="long"
+    />
+
     <Suspense>
       <RealtimePart
-          :key="airport"
+          :key="airport + long"
+          :long="parseInt(long)"
           :airport="airport"
       />
     </Suspense>
@@ -36,7 +44,8 @@ export default {
   name: "HomeView",
   data() {
     return {
-      airport: ''
+      airport: '',
+      long: 10
     }
   }
 }
