@@ -89,19 +89,21 @@ export default {
   },
   methods: {
     async updateChart() {
-      console.log(this.period)
       const from = new Date();
       const to = new Date();
 
       from.setMinutes(-this.period);
 
-      const json = await (await fetch(`http://localhost:8080/airport/${this.airport}/measure?type=${this.sensor}&startDate=${from.toISOString()}&endDate=${to.toISOString()}`)).json()
+      const json = await fetch(`http://localhost:8080/airport/${this.airport}/measure?type=${this.sensor}&startDate=${from.toISOString()}&endDate=${to.toISOString()}`)
+          .then(res => res.json())
 
-      const data = [{ name: this.sensor, data: json.map(obj => { return { y: obj.value.toFixed(2), x: new Date(obj.date) } })}];
+      if (json) {
+        const data = [{ name: this.sensor, data: json.map(obj => {
+            return obj !== null ? { y: obj.value.toFixed(2), x: new Date(obj.date) } : undefined })
+        }];
 
-      console.log(this.series)
-
-      this.$refs.chart.updateSeries(data);
+        this.$refs.chart.updateSeries(data);
+      }
     }
   }
 }

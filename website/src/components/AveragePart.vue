@@ -94,7 +94,6 @@ export default {
   },
   methods: {
     async updateChart() {
-      console.log("test")
       const json = await (await fetch(`http://localhost:8080/airport/${this.airport}/averages?date=${new Date().toISOString().split('T')[0]}`)).json()
 
       this.data.temp = json.find(el => el.sensortype === "temperature")

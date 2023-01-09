@@ -6,7 +6,7 @@
       <RealtimeChart
           class="chart"
           sensor="pressure"
-          :min="960"
+          :min="950"
           :max="1030"
           :airport="airport"
           :period="long"

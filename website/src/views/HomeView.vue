@@ -45,7 +45,7 @@ export default {
   data() {
     return {
       airport: '',
-      long: 10
+      long: '10'
     }
   }
 }
