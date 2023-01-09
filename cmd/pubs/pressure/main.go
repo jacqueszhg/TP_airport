@@ -72,6 +72,7 @@ func main() {
 			tokenLog := client.Publish("airport/log", byte(QOSLevel), true, bytesMsg)
 			tokenDB.Wait()
 			tokenLog.Wait()
+			fmt.Println(msg)
 			time.Sleep(time.Duration(frequency) * time.Second)
 			currentTime.Add(time.Duration(frequency) * (time.Second * 3600))
 		}

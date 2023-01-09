@@ -4,6 +4,7 @@ import (
 	"Airport/internal/pkg/config"
 	mqttConfig "Airport/internal/pkg/mqtt"
 	"encoding/json"
+	"fmt"
 	_ "math"
 	"math/rand"
 	"strconv"
@@ -54,6 +55,7 @@ func main() {
 				tokenLog.Wait()
 				time.Sleep(time.Duration(frequency) * time.Second)
 			}
+			fmt.Print(message)
 		}
 	}
 
