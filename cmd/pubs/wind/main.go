@@ -11,13 +11,16 @@ import (
 )
 
 func getWind(lastValue float64) float64 {
-	r := -10 + rand.Float64()*(20)
+	r := rand.Float64()*30 - 15
 	newValue := lastValue + r
-	for r > 0.4 && r < 80 {
-		r = -10 + rand.Float64()*(20)
-		newValue = lastValue + r
+
+	if newValue < 0.4 {
+		return 0.4
+	} else if newValue > 80 {
+		return 80
+	} else {
+		return newValue
 	}
-	return newValue
 }
 
 func main() {
