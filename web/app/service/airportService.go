@@ -84,13 +84,20 @@ func GetAveragesByDate(airportCode string, date time.Time) (float64, float64, fl
 			windCompt++
 		}
 	}
-
-	temperatureAverage := temperatureSomme / temperatureCompt
-	pressureAverage := pressureSomme / pressureCompt
-	windAverage := windSomme / windCompt
+	temperatureAverage := 0.0
+	if temperatureCompt != 0.0 {
+		temperatureAverage = temperatureSomme / temperatureCompt
+	}
+	pressureAverage := 0.0
+	if pressureCompt != 0.0 {
+		pressureAverage = pressureSomme / pressureCompt
+	}
+	windAverage := 0.0
+	if windCompt != 0.0 {
+		windAverage = windSomme / windCompt
+	}
 
 	client.Close()
-
 	return temperatureAverage, pressureAverage, windAverage
 }
 
